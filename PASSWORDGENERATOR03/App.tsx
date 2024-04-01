@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
 
 import * as Yup from "yup"
@@ -66,9 +66,9 @@ export default function App() {
     setSymbols(false)
   }
   return (
-    <View>
-      <Text>App</Text>
-    </View>
+    <SafeAreaView>
+      <Text>Take 2</Text>
+    </SafeAreaView>
   )
 }
 

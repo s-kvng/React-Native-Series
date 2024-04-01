@@ -12,8 +12,10 @@
   "dependencies": {
     "expo": "~50.0.14",
     "expo-status-bar": "~1.11.1",
+    "formik": "^2.4.5",
     "react": "18.2.0",
     "react-native": "0.73.6",
+    "react-native-bouncy-checkbox": "^3.0.7",
     "yup": "^1.4.0"
   },
   "devDependencies": {
