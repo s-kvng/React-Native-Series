@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image, ImageSourcePropType, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import type { PropsWithChildren } from 'react'
+import * as Haptics from 'expo-haptics';
 
 import DiceOne from './assets/One.png'
 import DiceTwo from './assets/Two.png'
@@ -30,6 +31,11 @@ export default function App() {
 
     const rollDice = () => {
         const randomNumber =Math.floor(Math.random() * 6) + 1;
+        //add haptic feedback
+        // Haptics.notificationAsync(
+        //     Haptics.NotificationFeedbackType.Warning
+        //   )
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
         console.log(randomNumber);
 
         switch(randomNumber){
