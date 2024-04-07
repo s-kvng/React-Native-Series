@@ -1,6 +1,6 @@
-interface currency {
+interface Currency {
     name: string;
-    value: string;
-    flags: string;
+    value: number;
+    flag: string;
     symbol: string;
 }
