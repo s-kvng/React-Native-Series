@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Alert } from 'react-native'
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, Alert, FlatList, Pressable } from 'react-native'
+import Icons from './components/Icons';
 
 export default function App() {
 
@@ -16,11 +17,14 @@ export default function App() {
 
   const checkIsinner = ()=>{
      //  checking  winner of the game
+     console.log("run")
+     console.log(gameState[2])
      if (
       gameState[0] === gameState[1] &&
       gameState[0] === gameState[2] &&
       gameState[0] !== 'empty'
     ) {
+      console.log("winner")
       setGameWinner(`${gameState[0]} won the game! 🥳`);
     } else if (
       gameState[3] !== 'empty' &&
@@ -74,26 +78,151 @@ export default function App() {
       if (gameWinner) {
         return Alert.alert("Game winner", "The Game has already been won");
       }
+
+      
+      if(gameState[itemNumber] === "empty"){
+        console.log("Game state")
+        setGameState(prevState => {
+          return prevState.map((item, index) => {
+            if (index === itemNumber) {
+              return( 
+                isCross ? "cross" : "circle"
+                );
+            } else {
+              return item;
+            }
+          });
+        });
+        console.log("run here")
+        setIsCross(!isCross);
+        
+      }
+      
     }
 
+    useEffect(()=>{
+      checkIsinner()
+    },[gameState]);
+
+    
   return (
     // <View style={styles.container}>
     <SafeAreaView className=" bg-white">
-
-      <View className=''>
-        <Text className=' text-lg font-semibold text-center'>Tic Tac Toe online</Text>
+       <View className=' mt-5 '>
+        <Text className=' text-3xl font-bold text-center'>Tic Tac Toe online</Text>
       </View>
-      <Text>Open up App.tsx to start working on your app!</Text>
       <StatusBar style="auto" />
+      {gameWinner ? (
+        <View  className={` flex-row justify-center items-center h-20 ${isCross ? " bg-blue-500" : "bg-teal-500"} my-5 mx-10 shadow-sm shadow-black`}>
+          <Text style={styles.winnerTxt} className="">{gameWinner}</Text>
+        </View>
+      ) : (
+        <View
+        style={[
+          isCross ? styles.playerX : styles.playerO
+        ]}
+
+        className=' h-24 px-8 mx-8 my-8 flex flex-row justify-center items-center shadow-sm shadow-black'
+        >
+          <Text style={styles.gameTurnTxt}>
+            Player {isCross? 'X' : 'O'}'s Turn
+          </Text>
+        </View>
+      )}
+
+      {/* game grid */}
+      <FlatList
+      numColumns={3}
+      data={gameState}
+      className=' m-5'
+      renderItem={({item, index}) => (
+        <Pressable
+        key={index}
+        style={styles.card}
+        onPress={() => onChangeItem(index)}
+        >
+          <Icons name={item} />
+        </Pressable>
+      )}
+      />
+     
+      {/* game action */}
+      <Pressable
+      style={styles.gameBtn}
+      onPress={reloadGame}
+      >
+        <Text style={styles.gameBtnText}>
+          {gameWinner ? 'Start new game' : 'Reload the game'}
+        </Text>
+      </Pressable>
+      
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
+  // playerInfo: {
+   
+  //   borderRadius: 4,
+  //   paddingVertical: 8,
+  //   marginVertical: 12,
+  //   marginHorizontal: 14,
+
+  //   shadowOffset: {
+  //     width: 1,
+  //     height: 1,
+  //   },
+  //   shadowColor: '#333',
+  //   shadowOpacity: 0.2,
+  //   shadowRadius: 1.5,
+  // },
+  gameTurnTxt: {
+    fontSize: 20,
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
+  playerX: {
+    backgroundColor: '#38CC77',
+  },
+  playerO: {
+    backgroundColor: '#F7CD2E',
+  },
+  grid: {
+    margin: 12,
+  },
+  card: {
+    height: 100,
+    width: '33.33%',
+
     alignItems: 'center',
     justifyContent: 'center',
+
+    borderWidth: 1,
+    borderColor: '#333',
+  },
+  winnerInfo: {
+    borderRadius: 8,
+    backgroundColor: '#38CC77',
+
+    shadowOpacity: 0.1,
+  },
+  winnerTxt: {
+    fontSize: 20,
+    color: '#FFFFFF',
+    fontWeight: '600',
+    textTransform: 'capitalize',
+  },
+  gameBtn: {
+    alignItems: 'center',
+
+    padding: 10,
+    borderRadius: 8,
+    marginHorizontal: 36,
+    backgroundColor: '#8D3DAF',
+  },
+  gameBtnText: {
+    fontSize: 18,
+    color: '#FFFFFF',
+    fontWeight: '500',
   },
 });
