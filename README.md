@@ -57,8 +57,6 @@ For a young react native developer to experiment with, this repository is built 
     <li>Convert currency of various of countries choosen to a specific currency , in my case GHc</li>
   </ul>
   
-  > Actually under the hood its just images that is been changed randomly. Help use images in react native.
-
 </details>
 
 
